@@ -43,9 +43,9 @@
 
 - name: generate the CSR
   command: |
-    openssl req -new -sha256 -subj "/CN={{ certificate_common_name }}" 
-    -config "{{ certificate_directory }}/openssl-request.conf"  
-    -key "{{ certificate_directory + '/' + key_filename }}" 
+    openssl req -new -sha256 -subj "/CN={{ certificate_common_name }}"
+    -config "{{ certificate_directory }}/openssl-request.conf"
+    -key "{{ certificate_directory + '/' + key_filename }}"
     -out "{{ certificate_directory + '/' + csr_filename }}"
   args:
     creates: "{{ certificate_directory + '/' + csr_filename }}"
@@ -95,7 +95,7 @@
   tags:
     - web-api
 
-- name: Create DNS Record  
+- name: Create DNS Record
   cloudflare_dns:
     domain: "{{ cloudflare_domain }}"
     record: "_acme-challenge.{{ item.key }}"
@@ -129,7 +129,7 @@
   tags:
     - web-api
 
-- name: Delete DNS Record  
+- name: Delete DNS Record
   cloudflare_dns:
     domain: "{{ cloudflare_domain }}"
     record: "_acme-challenge.{{ item.key }}"
@@ -145,7 +145,7 @@
 
 - name: download the Let's Encrypt intermediate CA
   get_url:
-    url: https://letsencrypt.org/certs/lets-encrypt-r3-cross-signed.pem
+    url: "{{ letsencrypt_intermediate_ca_url }}"
     dest: "{{ certificate_directory + '/' + intermediate_filename }}"
     owner: "{{ certificate_files_owner }}"
     group: "{{ certificate_files_group }}"
